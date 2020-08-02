@@ -8,10 +8,16 @@
 
 import UIKit
 
+public protocol PVSwitchDelegate {
+    func PVSwifth(didChange switchObj:PVSwitch, on:Bool)
+}
+
 @IBDesignable
 open class PVSwitch: UIControl {
 
-	@IBInspectable var isOn: Bool {
+    public var delegate:PVSwitchDelegate? = nil
+    
+	@IBInspectable public var isOn: Bool {
 		get {
 			return self.isOnPrivate
 		}
@@ -20,37 +26,37 @@ open class PVSwitch: UIControl {
 		}
 	}
 
-	@IBInspectable var isBounceEnabled: Bool = true
-	@IBInspectable var bounceOffset: CGFloat = 0.0
+	@IBInspectable public var isBounceEnabled: Bool = true
+	@IBInspectable public var bounceOffset: CGFloat = 0.0
 
-	@IBInspectable var thumbOnTintColor: UIColor = UIColor.green {
+	@IBInspectable public var thumbOnTintColor: UIColor = UIColor.green {
 		didSet {
 			self.configureThumbColors()
 		}
 	}
-	@IBInspectable var thumbOffTintColor: UIColor = .gray {
+	@IBInspectable public var thumbOffTintColor: UIColor = .gray {
 		didSet {
 			self.configureThumbColors()
 		}
 	}
 
-	@IBInspectable var trackOnTintColor: UIColor = .gray {
+	@IBInspectable public var trackOnTintColor: UIColor = .gray {
 		didSet {
 			self.configureTrackColors()
 		}
 	}
-	@IBInspectable var trackOffTintColor: UIColor = .gray {
+	@IBInspectable public var trackOffTintColor: UIColor = .gray {
 		didSet {
 			self.configureTrackColors()
 		}
 	}
 
-	@IBInspectable var thumbDisabledTintColor: UIColor = .gray {
+	@IBInspectable public var thumbDisabledTintColor: UIColor = .gray {
 		didSet {
 			self.configureThumbColors()
 		}
 	}
-	@IBInspectable var trackDisabledTintColor: UIColor = .gray {
+	@IBInspectable public var trackDisabledTintColor: UIColor = .gray {
 		didSet {
 			self.configureTrackColors()
 		}
@@ -161,6 +167,8 @@ private extension PVSwitch {
 
 		self.configureThumbColors()
 		self.configureTrackColors()
+        
+        delegate?.PVSwifth(didChange: self, on: on)
 	}
 
 	private func adjustThumbBounceOffsetForStateChange(on: Bool) {
